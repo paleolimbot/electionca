@@ -90,7 +90,7 @@ results_historical <- results_historical_raw %>%
     votes = votes %>% na_if("NULL") %>% na_if("accl.") %>% as.numeric()
   ) %>%
   filter(election_type == "Gen") %>%
-  select(-first_name, -last_name, -gender, -election_type, -parliament)
+  select(-first_name, -last_name, -gender, -election_type, -parliament, -vote_pct)
 
 parties_2011_2015 <- c(
   "NDP-New Democratic Party/NPD-Nouveau Parti démocratique",
@@ -146,17 +146,14 @@ results_2011_2015 <- bind_rows(
   extract(
     candidate,
     c("name", "party"),
-    paste0("^(.*?)\\s+(", paste0(parties_2011_2015, collapse = "|"), ")"), remove = F
+    paste0("^(.*?)\\s+(", paste0(parties_2011_2015, collapse = "|"), ")")
   ) %>%
   mutate(
     occupation = str_remove_all(occupation, "(^/)|(/$)"),
     party = str_remove(party, "/.*"),
     province = str_remove(province, "/.*"),
     riding = str_remove(riding, "/.*")
-  ) %>%
-  group_by(province, riding) %>%
-  mutate(vote_pct = votes / sum(votes, na.rm = TRUE) * 100) %>%
-  ungroup()
+  )
 
 # ---- results combine ----
 
@@ -166,11 +163,8 @@ results <- bind_rows(
 ) %>%
   mutate(
     riding = sanitize_riding(riding)
-  )
-
-# fix ridings!
-# 2006 & 2008: northwest_territories => western_arctic,
-
+  ) %>%
+  select(election_date, province, riding, name, party, votes, elected, everything())
 
 usethis::use_data(results, overwrite = TRUE)
 
