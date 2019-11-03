@@ -8,6 +8,14 @@
 \description{
 Canadian elections data.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/paleolimbot/electionca}
+  \item Report bugs at \url{https://github.com/paleolimbot/electionca/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Dewey Dunnington \email{dewey@fishandwhistle.net} (0000-0002-9415-4582)
 

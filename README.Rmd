@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of electionca is to provide Canadian (general) election data in an easily accessible format for R users. It is based on the Library of Parliament's [History of the Federal Electoral Ridings, 1867-2010](https://open.canada.ca/data/en/dataset/ea8f2c37-90b6-4fee-857e-984d3060184e), but also includes results from the [2011](https://www.elections.ca/content.aspx?section=ele&document=index&dir=pas/41ge&lang=e) and [2015](https://www.elections.ca/content.aspx?section=ele&document=index&dir=pas/42ge&lang=e) general elections. Geography for elections since 2003 was derived from the [2003](https://open.canada.ca/data/en/dataset/78400aed-2370-4437-97ca-7563c21bacb1) and [2015](https://open.canada.ca/data/en/dataset/737be5ea-27cf-48a3-91d6-e835f11834b0) riding boundaries; geography for previous elections is currently missing.
+The goal of electionca is to provide Canadian (general) election data in an easily accessible format for R users. It is based on the Library of Parliament's [ParlInfo site](https://lop.parl.ca/sites/ParlInfo/default/en_CA/), but also includes geography for elections since 2003 ([2003](https://open.canada.ca/data/en/dataset/78400aed-2370-4437-97ca-7563c21bacb1) and [2015](https://open.canada.ca/data/en/dataset/737be5ea-27cf-48a3-91d6-e835f11834b0)). Approximate geography is derived for historical ridings based on riding associations noted by the Library of Parliament.
 
 ## Installation
 
@@ -32,10 +32,11 @@ devtools::install_github("paleolimbot/electionca")
 ```
 ## Example
 
-This package contains geographic information about ridings (`boundaries`), and results from each riding, for each general election (`results`).
+This package contains geographic information about [ridings](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Ridings) (`ridings`), [results from each riding](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Elections) for each general election (`results`), and low-resolution boundaries, where these are known (2004-present).
 
 ```{r example}
 library(electionca)
-boundaries
 results
+ridings
+boundaries
 ```
