@@ -12,7 +12,8 @@ an easily accessible format for R users. It is based on the Library of
 Parliament’s [ParlInfo
 site](https://lop.parl.ca/sites/ParlInfo/default/en_CA/), but also
 includes geography for elections since 2003
-([2003](https://open.canada.ca/data/en/dataset/78400aed-2370-4437-97ca-7563c21bacb1)
+([2003](https://open.canada.ca/data/en/dataset/78400aed-2370-4437-97ca-7563c21bacb1),
+[2013](https://open.canada.ca/data/en/dataset/10801c67-7f18-4ea1-bda7-8962abfc5578)
 and
 [2015](https://open.canada.ca/data/en/dataset/737be5ea-27cf-48a3-91d6-e835f11834b0)).
 Approximate geography is derived for historical ridings based on riding
