@@ -6,18 +6,21 @@ output: github_document
 
 ```{r, include = FALSE}
 library(sf)
+library(lubridate)
 library(tidyverse)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  dpi = 300
 )
 ```
 
 # electionca
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 The goal of electionca is to provide Canadian (general) election data in an easily accessible format for R users. It is based on the Library of Parliament's [ParlInfo site](https://lop.parl.ca/sites/ParlInfo/default/en_CA/), but also includes geography for elections since 2003 ([2003](https://open.canada.ca/data/en/dataset/78400aed-2370-4437-97ca-7563c21bacb1), [2013](https://open.canada.ca/data/en/dataset/10801c67-7f18-4ea1-bda7-8962abfc5578) and [2015](https://open.canada.ca/data/en/dataset/737be5ea-27cf-48a3-91d6-e835f11834b0)). Approximate geography is derived for historical ridings based on riding associations noted by the Library of Parliament.
@@ -39,4 +42,18 @@ library(electionca)
 results
 ridings
 boundaries
+```
+
+Still working on some aspects of the data cleaning, including finding a few missing ridings that should have candidates.
+
+```{r}
+library(tidyverse)
+library(lubridate)
+results %>%
+  filter(year(election_date) == 2019, result == "Elected") %>%
+  left_join(ridings, by = "riding") %>%
+  left_join(boundaries, by = "boundary_id") %>%
+  ggplot(aes(fill = party, geometry = geometry))  +
+  geom_sf() +
+  theme_void()
 ```

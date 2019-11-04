@@ -4,7 +4,7 @@
 \name{boundaries}
 \alias{boundaries}
 \title{Riding boundaries}
-\format{An object of class \code{sf} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 984 rows and 5 columns.}
+\format{An object of class \code{sf} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 463 rows and 2 columns.}
 \usage{
 boundaries
 }

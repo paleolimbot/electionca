@@ -65,7 +65,15 @@ lop_candidates <- candidates_xml %>%
   filter(IsGeneral == "true") %>%
   # make sure the riding_id is set so that we can semi_join() to filter
   # ridings
-  mutate(riding_id = as.numeric(ConstituencyId))
+  mutate(riding_id = as.numeric(ConstituencyId)) %>%
+  # one candidate has no riding_id...fixing here
+  mutate(
+    riding_id = if_else(
+      ElectionCanadaLastName == "Lépine" & PartyNameEn == "Green Party of Canada",
+      3264,
+      riding_id
+    )
+  )
 
 # ---- historic riding geoloc info ----
 
@@ -297,8 +305,12 @@ results <- lop_candidates %>%
   select(election_date, riding, name, party, votes, result, person_id) %>%
   arrange(election_date, riding, desc(votes))
 
-# ---- use data ----
+boundaries <- boundaries %>%
+  select(boundary_id, geometry) %>%
+  semi_join(ridings, by = "boundary_id")
 
+# ---- use data ----
+stop("stop  here!")
 usethis::use_data(results, overwrite = TRUE)
 usethis::use_data(ridings, overwrite = TRUE)
 usethis::use_data(boundaries, overwrite = TRUE)

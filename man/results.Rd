@@ -4,7 +4,7 @@
 \name{results}
 \alias{results}
 \title{Election Results}
-\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 39992 rows and 8 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 42096 rows and 7 columns.}
 \usage{
 results
 }
