@@ -95,7 +95,16 @@ test_that("ridings and results are internally consistent", {
   expect_identical(dplyr::semi_join(ridings, results, by = "riding"), ridings)
 })
 
-test_that("boundaries and ridings are internally consistent", {
-  expect_true(all(boundaries$boundary_id %in% ridings$boundary_id))
-  expect_true(all(ridings$boundary_id %in% c(boundaries$boundary_id, NA)))
+test_that("results and boundaries are internally consistent", {
+  recent_results <- results %>% dplyr::filter(election_date >= "2005-01-01")
+  expect_identical(
+    dplyr::semi_join(recent_results, boundaries, by = c("riding", "election_date")),
+    recent_results
+  )
+
+  expect_identical(
+    dplyr::semi_join(boundaries, recent_results, by = c("riding", "election_date")) %>%
+      dplyr::select(-boundary),
+    boundaries %>% dplyr::select(-boundary)
+  )
 })

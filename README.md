@@ -38,7 +38,7 @@ This package contains geographic information about
 (`ridings`), [results from each
 riding](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Elections)
 for each general election (`results`), and low-resolution boundaries,
-where these are known (2004-present).
+where these are known (2006-present).
 
 ``` r
 library(electionca)
@@ -73,26 +73,26 @@ ridings
 #> 10 AB/19… Calgary West       1917     1953      1395 Alberta           NA
 #> # … with 1,483 more rows, and 2 more variables: lon <dbl>, lat <dbl>
 boundaries
-#> Simple feature collection with 463 features and 1 field
+#> Simple feature collection with 1600 features and 2 fields
 #> geometry type:  GEOMETRY
 #> dimension:      XY
 #> bbox:           xmin: -2371619 ymin: -724687.7 xmax: 3012991 ymax: 4654012
 #> epsg (SRID):    3978
 #> proj4string:    +proj=lcc +lat_1=49 +lat_2=77 +lat_0=49 +lon_0=-95 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
-#> # A tibble: 463 x 2
-#>    boundary_id                                                     geometry
-#>          <int>                                                <POLYGON [m]>
-#>  1           2 ((-1480862 604541.3, -1478280 615286.5, -1477359 611351.2, …
-#>  2           4 ((-1262781 491857.4, -1261876 494990.4, -1260382 494478.8, …
-#>  3           6 ((-1299614 400326.3, -1297659 406765.2, -1299582 407354.3, …
-#>  4           7 ((-1310951 424734.8, -1310560 424750.1, -1310582 425203.6, …
-#>  5          10 ((-1305088 433897.2, -1304074 432879.3, -1303496 432022.3, …
-#>  6          12 ((-1313840 429506.3, -1313692 429729.6, -1312952 429856.5, …
-#>  7          13 ((-1297952 423636.4, -1296416 423176, -1300204 410982.6, -1…
-#>  8          14 ((-1304270 422950.8, -1304184 423362.5, -1304044 423337.6, …
-#>  9          16 ((-1321973 410839.1, -1321011 413951.2, -1316401 412521.5, …
-#> 10          19 ((-1315167 405380.6, -1314036 408925.6, -1314172 409803.7, …
-#> # … with 453 more rows
+#> # A tibble: 1,600 x 3
+#>    election_date riding                                            boundary
+#>    <date>        <chr>                                        <POLYGON [m]>
+#>  1 2006-01-23    AB/1907/medici… ((-1173009 394195.8, -1172396 393674.9, -…
+#>  2 2006-01-23    AB/1908/red_de… ((-1282197 563271.4, -1279521 562433.7, -…
+#>  3 2006-01-23    AB/1925/peace_… ((-1032020 1302682, -1098867 1085578, -11…
+#>  4 2006-01-23    AB/1925/wetask… ((-1278147 676705, -1278199 676488.1, -12…
+#>  5 2006-01-23    AB/1953/edmont… ((-1191073 673934.7, -1190621 674150.3, -…
+#>  6 2006-01-23    AB/1968/crowfo… ((-1153444 636376.6, -1153873 634881.6, -…
+#>  7 2006-01-23    AB/1979/calgar… ((-1313621 434403.1, -1311302 431518.2, -…
+#>  8 2006-01-23    AB/1979/yellow… ((-1474371 894567.9, -1461911 889687.5, -…
+#>  9 2006-01-23    AB/1988/calgar… ((-1296230 423767.1, -1296416 423176, -13…
+#> 10 2006-01-23    AB/1988/calgar… ((-1305123 411846.9, -1305024 411769.9, -…
+#> # … with 1,590 more rows
 ```
 
 Still working on some aspects of the data cleaning, including finding a
@@ -102,12 +102,12 @@ few missing ridings that should have candidates.
 library(tidyverse)
 library(lubridate)
 results %>%
-  filter(year(election_date) == 2019, result == "Elected") %>%
-  left_join(ridings, by = "riding") %>%
-  left_join(boundaries, by = "boundary_id") %>%
-  ggplot(aes(fill = party, geometry = geometry))  +
-  geom_sf() +
-  theme_void()
+  filter(year(election_date) >= 2006, result == "Elected") %>%
+  left_join(boundaries, by = c("election_date", "riding")) %>%
+  ggplot(aes(fill = party, geometry = boundary))  +
+  geom_sf(size = 0.2) +
+  theme_void() +
+  facet_wrap(vars(year(election_date)))
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-test-map-1.png" width="100%" />

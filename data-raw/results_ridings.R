@@ -286,7 +286,7 @@ ridings <- lop_ridings %>%
     str_replace(riding_maybe_not_unique, "[0-9]{4}", paste0("\\0", letters[1:n()])))
   ) %>%
   ungroup() %>%
-  select(riding, riding_label, year_start, year_end, riding_id, province, boundary_id, lon, lat)
+  select(riding, riding_label, year_start, year_end, riding_id, province, lon, lat)
 
 # ---- clean election results  ----
 
@@ -305,23 +305,18 @@ results <- lop_candidates %>%
   select(election_date, riding, name, party, votes, result, person_id) %>%
   arrange(election_date, riding, desc(votes))
 
-boundaries <- boundaries %>%
-  select(boundary_id, geometry) %>%
-  semi_join(ridings, by = "boundary_id")
-
 # ---- use data ----
-stop("stop  here!")
+
 usethis::use_data(results, overwrite = TRUE)
 usethis::use_data(ridings, overwrite = TRUE)
-usethis::use_data(boundaries, overwrite = TRUE)
 
 # ---- cleanup ----
 
-unlink("data-raw/boundaries_2015.zip")
-unlink("data-raw/boundaries_2015/", recursive = TRUE)
-unlink("data-raw/boundaries_2003.zip")
-unlink("data-raw/boundaries_2003/", recursive = TRUE)
-unlink("data-raw/boundaries_2013.zip")
-unlink("data-raw/boundaries_2013/", recursive = TRUE)
-unlink("data-raw/lop_ridings.json")
-unlink("data-raw/candidates.xml")
+# unlink("data-raw/boundaries_2015.zip")
+# unlink("data-raw/boundaries_2015/", recursive = TRUE)
+# unlink("data-raw/boundaries_2003.zip")
+# unlink("data-raw/boundaries_2003/", recursive = TRUE)
+# unlink("data-raw/boundaries_2013.zip")
+# unlink("data-raw/boundaries_2013/", recursive = TRUE)
+# unlink("data-raw/lop_ridings.json")
+# unlink("data-raw/candidates.xml")

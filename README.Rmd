@@ -35,7 +35,7 @@ devtools::install_github("paleolimbot/electionca")
 ```
 ## Example
 
-This package contains geographic information about [ridings](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Ridings) (`ridings`), [results from each riding](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Elections) for each general election (`results`), and low-resolution boundaries, where these are known (2004-present).
+This package contains geographic information about [ridings](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Ridings) (`ridings`), [results from each riding](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Elections) for each general election (`results`), and low-resolution boundaries, where these are known (2006-present).
 
 ```{r example}
 library(electionca)
@@ -46,14 +46,14 @@ boundaries
 
 Still working on some aspects of the data cleaning, including finding a few missing ridings that should have candidates.
 
-```{r}
+```{r test-map}
 library(tidyverse)
 library(lubridate)
 results %>%
-  filter(year(election_date) == 2019, result == "Elected") %>%
-  left_join(ridings, by = "riding") %>%
-  left_join(boundaries, by = "boundary_id") %>%
-  ggplot(aes(fill = party, geometry = geometry))  +
-  geom_sf() +
-  theme_void()
+  filter(year(election_date) >= 2006, result == "Elected") %>%
+  left_join(boundaries, by = c("election_date", "riding")) %>%
+  ggplot(aes(fill = party, geometry = boundary))  +
+  geom_sf(size = 0.2) +
+  theme_void() +
+  facet_wrap(vars(year(election_date)))
 ```
