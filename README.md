@@ -107,6 +107,7 @@ results %>%
   ggplot(aes(fill = party, geometry = boundary))  +
   geom_sf(size = 0.2) +
   theme_void() +
+  scale_fill_party() +
   facet_wrap(vars(year(election_date)))
 ```
 

@@ -17,3 +17,6 @@ Suggests:
     dplyr,
     lubridate,
     tibble
+Imports: 
+    scales,
+    ggplot2
