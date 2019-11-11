@@ -58,20 +58,20 @@ results
 #> 10 1867-08-07    NB/1867/ke… NA MCINERN… Unknown       485 Defea…        NA
 #> # … with 42,086 more rows
 ridings
-#> # A tibble: 1,493 x 9
-#>    riding riding_label year_start year_end riding_id province boundary_id
-#>    <chr>  <chr>             <dbl>    <dbl>     <dbl> <chr>          <int>
-#>  1 AB/19… Calgary            1904     1908      1371 Alberta           NA
-#>  2 AB/19… Medicine Hat       1907     2015      5224 Alberta           73
-#>  3 AB/19… Edmonton           1908     1917      2704 Alberta           NA
-#>  4 AB/19… Macleod            1908     1968      5037 Alberta           NA
-#>  5 AB/19… Red Deer           1908     2015      7064 Alberta           79
-#>  6 AB/19… Strathcona         1908     1925      8822 Alberta           NA
-#>  7 AB/19… Victoria           1908     1925      9615 Alberta           NA
-#>  8 AB/19… Battle River       1917     1953       808 Alberta           NA
-#>  9 AB/19… Bow River          1917     1968      1119 Alberta           NA
-#> 10 AB/19… Calgary West       1917     1953      1395 Alberta           NA
-#> # … with 1,483 more rows, and 2 more variables: lon <dbl>, lat <dbl>
+#> # A tibble: 1,493 x 8
+#>    riding   riding_label year_start year_end riding_id province   lon   lat
+#>    <chr>    <chr>             <dbl>    <dbl>     <dbl> <chr>    <dbl> <dbl>
+#>  1 AB/1904… Calgary            1904     1908      1371 Alberta  -113.  51.7
+#>  2 AB/1907… Medicine Hat       1907     2015      5224 Alberta  -111.  50.0
+#>  3 AB/1908… Edmonton           1908     1917      2704 Alberta  -114.  53.6
+#>  4 AB/1908… Macleod            1908     1968      5037 Alberta  -112.  50.9
+#>  5 AB/1908… Red Deer           1908     2015      7064 Alberta  -114.  52.1
+#>  6 AB/1908… Strathcona         1908     1925      8822 Alberta  -114.  52.8
+#>  7 AB/1908… Victoria           1908     1925      9615 Alberta  -114.  52.8
+#>  8 AB/1917… Battle River       1917     1953       808 Alberta  -114.  52.1
+#>  9 AB/1917… Bow River          1917     1968      1119 Alberta  -112.  51.3
+#> 10 AB/1917… Calgary West       1917     1953      1395 Alberta  -114.  52.1
+#> # … with 1,483 more rows
 boundaries
 #> Simple feature collection with 1600 features and 2 fields
 #> geometry type:  GEOMETRY
@@ -95,8 +95,8 @@ boundaries
 #> # … with 1,590 more rows
 ```
 
-Still working on some aspects of the data cleaning, including finding a
-few missing ridings that should have candidates.
+There are likely some errors, but it’s at least possible to make map of
+the last few elections\!
 
 ``` r
 library(tidyverse)

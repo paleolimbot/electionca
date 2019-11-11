@@ -44,7 +44,7 @@ ridings
 boundaries
 ```
 
-Still working on some aspects of the data cleaning, including finding a few missing ridings that should have candidates.
+There are likely some errors, but it's at least possible to make map of the last few elections!
 
 ```{r test-map}
 library(tidyverse)
