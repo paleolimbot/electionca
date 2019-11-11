@@ -15,4 +15,5 @@ BugReports: https://github.com/paleolimbot/electionca/issues
 Suggests: 
     testthat (>= 2.1.0),
     dplyr,
-    lubridate
+    lubridate,
+    tibble
