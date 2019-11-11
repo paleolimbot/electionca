@@ -9,6 +9,26 @@ test_that("the correct number of elections exist", {
   expect_equal(lubridate::year(range(results$election_date)), c(1867, 2019))
 })
 
+test_that("there is exactly one winner for every riding since 1968 and at least one for others", {
+  election_ridings <- results %>%
+    dplyr::distinct(election_date, riding) %>%
+    dplyr::arrange(election_date, riding)
+
+  election_ridings <- results %>%
+    dplyr::group_by(election_date, riding) %>%
+    dplyr::summarise(
+      n_winners = sum(result == "Elected", na.rm = TRUE),
+      n_loosers = sum(result == "Defeated", na.rm = TRUE),
+      n_na = sum(is.na(result))
+    )
+
+  recent_election_ridings <- election_ridings %>%
+    dplyr::filter(election_date >= "1968-01-01")
+
+  expect_true(all(election_ridings$n_winners >= 1))
+  expect_true(all(recent_election_ridings$n_winners == 1))
+})
+
 test_that("ridings and results are internally consistent", {
   expect_identical(dplyr::semi_join(results, ridings, by = "riding"), results)
   expect_identical(dplyr::semi_join(ridings, results, by = "riding"), ridings)
