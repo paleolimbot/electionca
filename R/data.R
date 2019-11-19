@@ -28,3 +28,10 @@
 #' [2015](https://open.canada.ca/data/en/dataset/737be5ea-27cf-48a3-91d6-e835f11834b0).
 #'
 "boundaries"
+
+#' Provincial grid layout
+#'
+#' A layout that can be joined to [results] that works well facetted by
+#' `province` with `geom_tile()`.
+#'
+"layout_province_grid"

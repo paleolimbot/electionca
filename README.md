@@ -96,7 +96,9 @@ boundaries
 ```
 
 There are likely some errors, but it’s at least possible to make map of
-the last few elections\!
+the last few elections\! Note the use of `scale_fill_party()`, which
+assigns a reasonable colour to each party based on the party’s official
+colours.
 
 ``` r
 library(tidyverse)
@@ -108,7 +110,34 @@ results %>%
   geom_sf(size = 0.2) +
   theme_void() +
   scale_fill_party() +
-  facet_wrap(vars(year(election_date)))
+  facet_wrap(vars(year(election_date))) +
+  theme(legend.position = "bottom")
 ```
 
 <img src="man/figures/README-test-map-1.png" width="100%" />
+
+The package also contains a `layout_province_grid`, which is a way to
+arrange ridings such that each riding has an equal area. It works best
+with `facet_wrap(vars(province), scales = "free", space = "free")` and
+rotated `strip.text.y`.
+
+``` r
+results %>%
+  filter(result == "Elected") %>% 
+  left_join(layout_province_grid, by = c("election_date", "riding")) %>%
+  filter(year(election_date) >= 2006) %>%
+  ggplot(aes(geom_x, geom_y, fill = party)) +
+  geom_tile() +
+  theme_void() +
+  facet_grid(
+    vars(province), vars(year(election_date)), 
+    scales = "free", space = "free", switch = "y"
+  ) +
+  theme(
+    strip.text.y = element_text(angle = 180, hjust = 1)
+  ) +
+  scale_y_reverse() +
+  scale_fill_party()
+```
+
+<img src="man/figures/README-layout-province-grid-1.png" width="100%" />
