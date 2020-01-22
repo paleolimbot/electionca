@@ -5,9 +5,9 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-library(sf)
-library(lubridate)
-library(tidyverse)
+requireNamespace("tibble")
+library(electionca)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build status](https://travis-ci.org/paleolimbot/electionca.svg?branch=master)](https://travis-ci.org/paleolimbot/electionca)
 <!-- badges: end -->
 
 The goal of electionca is to provide Canadian (general) election data in an easily accessible format for R users. It is based on the Library of Parliament's [ParlInfo site](https://lop.parl.ca/sites/ParlInfo/default/en_CA/), but also includes geography for elections since 2003 ([2003](https://open.canada.ca/data/en/dataset/78400aed-2370-4437-97ca-7563c21bacb1), [2013](https://open.canada.ca/data/en/dataset/10801c67-7f18-4ea1-bda7-8962abfc5578) and [2015](https://open.canada.ca/data/en/dataset/737be5ea-27cf-48a3-91d6-e835f11834b0)). Approximate geography is derived for historical ridings based on riding associations noted by the Library of Parliament.
@@ -33,50 +34,35 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("paleolimbot/electionca")
 ```
+If you can load the package, you're all set!
+
+```{r}
+library(electionca)
+```
+
 ## Example
 
-This package contains geographic information about [ridings](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Ridings) (`ridings`), [results from each riding](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Elections) for each general election (`results`), and low-resolution boundaries, where these are known (2006-present).
+This package contains geographic information about [ridings](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Ridings) (`ridings`), [results from each riding](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Elections) for each general election (`results`), and low-resolution boundaries, where these are known (2006-present). It contains convenience functions to plot election results in bar, cartogram, and map format:
 
-```{r example}
-library(electionca)
+```{r test-plot}
+plot_votes()
+plot_seats()
+plot_election()
+plot_election_map()
+```
+
+The easiest way to access the data in this package is through the `election_results()` function, which modifies the raw data slightly to provide the data that you probably want to work with:
+
+```{r}
+election_results()
+```
+
+If you're looking to do a more comprehensive analysis, you can access the raw data using `results`, `ridings`, and `boundaries`.
+
+```{r example-data}
 results
 ridings
 boundaries
 ```
 
-There are likely some errors, but it's at least possible to make map of the last few elections! Note the use of `scale_fill_party()`, which assigns a reasonable colour to each party based on the party's official colours.
-
-```{r test-map}
-library(tidyverse)
-library(lubridate)
-results %>%
-  filter(year(election_date) >= 2006, result == "Elected") %>%
-  left_join(boundaries, by = c("election_date", "riding")) %>%
-  ggplot(aes(fill = party, geometry = boundary))  +
-  geom_sf(size = 0.2) +
-  theme_void() +
-  scale_fill_party() +
-  facet_wrap(vars(year(election_date))) +
-  theme(legend.position = "bottom")
-```
-
-The package also contains a `layout_province_grid`, which is a way to arrange ridings such that each riding has an equal area. It works best with `facet_wrap(vars(province), scales = "free", space = "free")` and rotated `strip.text.y`.
-
-```{r layout-province-grid}
-results %>%
-  filter(result == "Elected") %>% 
-  left_join(layout_province_grid, by = c("election_date", "riding")) %>%
-  filter(year(election_date) >= 2006) %>%
-  ggplot(aes(geom_x, geom_y, fill = party)) +
-  geom_tile() +
-  theme_void() +
-  facet_grid(
-    vars(province), vars(year(election_date)), 
-    scales = "free", space = "free", switch = "y"
-  ) +
-  theme(
-    strip.text.y = element_text(angle = 180, hjust = 1)
-  ) +
-  scale_y_reverse() +
-  scale_fill_party()
-```
+For examples of how to use the raw data to create the plots returned by `plot_election_map()` and `plot_election()`, see `vignette("plot_election", package = "electionca")`.

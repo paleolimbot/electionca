@@ -7,6 +7,8 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.org/paleolimbot/electionca.svg?branch=master)](https://travis-ci.org/paleolimbot/electionca)
 <!-- badges: end -->
 
 The goal of electionca is to provide Canadian (general) election data in
@@ -31,6 +33,12 @@ You can install the development version from
 devtools::install_github("paleolimbot/electionca")
 ```
 
+If you can load the package, you’re all set\!
+
+``` r
+library(electionca)
+```
+
 ## Example
 
 This package contains geographic information about
@@ -38,10 +46,60 @@ This package contains geographic information about
 (`ridings`), [results from each
 riding](https://lop.parl.ca/sites/ParlInfo/default/en_CA/ElectionsRidings/Elections)
 for each general election (`results`), and low-resolution boundaries,
-where these are known (2006-present).
+where these are known (2006-present). It contains convenience functions
+to plot election results in bar, cartogram, and map format:
 
 ``` r
-library(electionca)
+plot_votes()
+```
+
+<img src="man/figures/README-test-plot-1.png" width="100%" />
+
+``` r
+plot_seats()
+```
+
+<img src="man/figures/README-test-plot-2.png" width="100%" />
+
+``` r
+plot_election()
+```
+
+<img src="man/figures/README-test-plot-3.png" width="100%" />
+
+``` r
+plot_election_map()
+```
+
+<img src="man/figures/README-test-plot-4.png" width="100%" />
+
+The easiest way to access the data in this package is through the
+`election_results()` function, which modifies the raw data slightly to
+provide the data that you probably want to work with:
+
+``` r
+election_results()
+#> # A tibble: 42,096 x 11
+#>    election_date riding name  party votes result person_id province
+#>    <date>        <chr>  <chr> <chr> <dbl> <chr>      <dbl> <fct>   
+#>  1 1867-08-07    NB/18… John… Libe…   778 Elect…     15128 New Bru…
+#>  2 1867-08-07    NB/18… Henr… Unkn…   714 Defea…        NA New Bru…
+#>  3 1867-08-07    NB/18… Char… Libe…     0 Elect…     16576 New Bru…
+#>  4 1867-08-07    NB/18… John… Libe…  1214 Elect…     13379 New Bru…
+#>  5 1867-08-07    NB/18… Robe… Unkn…   918 Defea…        NA New Bru…
+#>  6 1867-08-07    NB/18… Timo… Libe…  1061 Elect…     14587 New Bru…
+#>  7 1867-08-07    NB/18… John… Unkn…   671 Defea…        NA New Bru…
+#>  8 1867-08-07    NB/18… Augu… Libe…   876 Elect…      4768 New Bru…
+#>  9 1867-08-07    NB/18… NA D… Unkn…   757 Defea…        NA New Bru…
+#> 10 1867-08-07    NB/18… NA M… Unkn…   485 Defea…        NA New Bru…
+#> # … with 42,086 more rows, and 3 more variables: riding_label <chr>,
+#> #   riding_id <dbl>, election_year <dbl>
+```
+
+If you’re looking to do a more comprehensive analysis, you can access
+the raw data using `results`, `ridings`, and `boundaries`.
+
+``` r
 results
 #> # A tibble: 42,096 x 7
 #>    election_date riding      name        party       votes result person_id
@@ -95,49 +153,6 @@ boundaries
 #> # … with 1,590 more rows
 ```
 
-There are likely some errors, but it’s at least possible to make map of
-the last few elections\! Note the use of `scale_fill_party()`, which
-assigns a reasonable colour to each party based on the party’s official
-colours.
-
-``` r
-library(tidyverse)
-library(lubridate)
-results %>%
-  filter(year(election_date) >= 2006, result == "Elected") %>%
-  left_join(boundaries, by = c("election_date", "riding")) %>%
-  ggplot(aes(fill = party, geometry = boundary))  +
-  geom_sf(size = 0.2) +
-  theme_void() +
-  scale_fill_party() +
-  facet_wrap(vars(year(election_date))) +
-  theme(legend.position = "bottom")
-```
-
-<img src="man/figures/README-test-map-1.png" width="100%" />
-
-The package also contains a `layout_province_grid`, which is a way to
-arrange ridings such that each riding has an equal area. It works best
-with `facet_wrap(vars(province), scales = "free", space = "free")` and
-rotated `strip.text.y`.
-
-``` r
-results %>%
-  filter(result == "Elected") %>% 
-  left_join(layout_province_grid, by = c("election_date", "riding")) %>%
-  filter(year(election_date) >= 2006) %>%
-  ggplot(aes(geom_x, geom_y, fill = party)) +
-  geom_tile() +
-  theme_void() +
-  facet_grid(
-    vars(province), vars(year(election_date)), 
-    scales = "free", space = "free", switch = "y"
-  ) +
-  theme(
-    strip.text.y = element_text(angle = 180, hjust = 1)
-  ) +
-  scale_y_reverse() +
-  scale_fill_party()
-```
-
-<img src="man/figures/README-layout-province-grid-1.png" width="100%" />
+For examples of how to use the raw data to create the plots returned by
+`plot_election_map()` and `plot_election()`, see
+`vignette("plot_election", package = "electionca")`.

@@ -15,7 +15,9 @@ BugReports: https://github.com/paleolimbot/electionca/issues
 Suggests: 
     testthat (>= 2.1.0),
     tibble,
-    vdiffr
+    vdiffr,
+    knitr,
+    rmarkdown
 Imports: 
     scales,
     ggplot2,
@@ -25,3 +27,4 @@ Imports:
     lubridate,
     sf,
     rlang
+VignetteBuilder: knitr

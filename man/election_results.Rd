@@ -7,7 +7,7 @@
 election_results(
   years = election_years(),
   provinces = election_provinces(),
-  results = "Elected"
+  results = c("Elected", "Defeated")
 )
 }
 \arguments{

@@ -51,7 +51,7 @@ election_provinces <- function() {
 #' @importFrom rlang .data
 election_results <- function(years = election_years(),
                              provinces = election_provinces(),
-                             results = "Elected") {
+                             results = c("Elected", "Defeated")) {
   electionca::results %>%
     dplyr::filter(
       lubridate::year(.data$election_date) %in% years,
@@ -66,6 +66,7 @@ election_results <- function(years = election_years(),
       .data$province %in% provinces
     ) %>%
     dplyr::mutate(
-      province = factor(.data$province, levels = provinces)
+      province = factor(.data$province, levels = provinces),
+      election_year = lubridate::year(.data$election_date)
     )
 }
