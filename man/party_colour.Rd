@@ -11,18 +11,32 @@
 \title{Colours for Canadian Political Parties}
 \format{An object of class \code{ScaleParty} (inherits from \code{ScaleDiscrete}, \code{Scale}, \code{ggproto}, \code{gg}) of length 2.}
 \usage{
-party_colour(party, party_colours = canadian_party_colours(),
-  palette_extra = scales::hue_pal(), na.value = "grey50")
-
-pal_party(party = character(0),
+party_colour(
+  party,
   party_colours = canadian_party_colours(),
-  palette_extra = scales::hue_pal())
+  palette_extra = scales::hue_pal(),
+  na.value = "grey50"
+)
 
-scale_colour_party(..., party_colours = canadian_party_colours(),
-  palette_extra = scales::hue_pal(), aesthetics = "colour")
+pal_party(
+  party = character(0),
+  party_colours = canadian_party_colours(),
+  palette_extra = scales::hue_pal()
+)
 
-scale_fill_party(..., party_colours = canadian_party_colours(),
-  palette_extra = scales::hue_pal(), aesthetics = "fill")
+scale_colour_party(
+  ...,
+  party_colours = canadian_party_colours(),
+  palette_extra = scales::hue_pal(),
+  aesthetics = "colour"
+)
+
+scale_fill_party(
+  ...,
+  party_colours = canadian_party_colours(),
+  palette_extra = scales::hue_pal(),
+  aesthetics = "fill"
+)
 
 canadian_party_colours()
 

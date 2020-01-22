@@ -8,15 +8,20 @@ Depends: R (>= 3.6.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/paleolimbot/electionca
 BugReports: https://github.com/paleolimbot/electionca/issues
 Suggests: 
     testthat (>= 2.1.0),
-    dplyr,
-    lubridate,
-    tibble
+    tibble,
+    vdiffr
 Imports: 
     scales,
-    ggplot2
+    ggplot2,
+    magrittr,
+    dplyr,
+    forcats,
+    lubridate,
+    sf,
+    rlang
